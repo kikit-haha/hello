@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scroll이벤트를 활용한 원페이지_레이아웃 구현-현대자동차</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      ul,
+      li,
+      ol {
+        list-style: none;
+      }
+      a {
+        text-decoration: none;
+        color: #1f1f1f;
+      }
+      body {
+        font-family: "나눔고딕", roboto, sans-serif;
+        font-size: 12px;
+        color: #1f1f1f;
+      }
+      /* 상단헤더서식 */
+      header {
+        width: 100%;
+        height: 116px;
+      }
+      #header_top,
+      nav {
+        height: 58px;
+        background-image: url("./img/back.png");
+      }
+      #header_top h1 {
+        width: 1200px;
+        margin: 0 auto;
+        line-height: 58px;
+      }
+      h1 > a {
+        font-size: 0px;
+      }
+      .gnb {
+        width: 1200px;
+        margin: 0 auto;
+        height: 58px;
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        line-height: 58px;
+      }
+      .gnb a {
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .gnb > li > a:hover {
+        color: rgb(255, 232, 23);
+      }
+      /* 메뉴클릭시 해당콘텐츠가 올라오면, 해당 메뉴에 적용할 서식 */
+      .on {
+        color: rgb(255, 232, 23) !important;
+      }
+      .status {
+        position: fixed;
+        top: 100px;
+        right: 30px;
+        padding: 10px;
+        font-size: 16px;
+        font-weight: 700;
+        background-color: rgb(255, 220, 20);
+        color: rgb(53, 53, 53);
+        z-index: 9999;
+      }
+      /* 콘텐츠영역 서식 */
+      section {
+        clear: both;
+        overflow: hidden;
+      }
+      section #visual {
+        width: 100%;
+        height: 688px;
+        background-image: url("./img/bg_visual1.jpg");
+        position: relative;
+        /* background-size: 100%; */
+        /* background-repeat: no-repeat; */
+      }
+      #visual img {
+        opacity: 0;
+      }
+      #visual img:first-child {
+        /* 타이틀이미지 */
+        position: absolute;
+        top: 15%;
+        right: 0px;
+        width: 500px;
+      }
+      #visual img:last-child {
+        position: absolute;
+        bottom: 20%;
+        left: 0px;
+        width: 500px;
+      }
+      article.sub_con {
+        width: 960px;
+        height: 740px;
+        margin: 30px auto;
+        background-color: aqua;
+      }
+      article img {
+        width: 100%;
+      }
+      footer {
+        width: 100%;
+        height: 80px;
+        background-color: #222;
+      }
+      footer address {
+        font-style: normal;
+        color: #fff;
+        text-align: center;
+        line-height: 80px;
+      }
+      footer > a {
+        background-color: #000;
+        color: #fff;
+        font-size: 20px;
+        padding: 12px 10px;
+        position: fixed;
+        bottom: 90px;
+        right: 50px;
+        border-radius: 10px;
+      }
+      /* 헤더내비게이션 추가 서식 */
+      .act {
+        position: fixed;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        z-index: 1000;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // 탑버튼숨기기
+        $("footer a").hide();
+        // 비주얼 이미지 영역에 타이틀, 자동차사진 보이게 하기
+        var title = $("#visual img:first-child");
+        var car = $("#visual img:last-child");
+        car.animate({left: "20%", opacity: "1"}, 500);
+        title.delay(500).animate({right: "20%", opacity: "1"}, 500);
+        // 내비게이션 메뉴 클릭시 해당하는 컨텐츠 상단에 top:58px 위치에올라오게하기
+        $(".gnb>li").on({
+          "click focus": function () {
+            var num = $(this).index() + 1; //0번은 비주얼박스임. 1,2,3,4,..나오게
+            console.log(num);
+            var con = $("section article").eq(num).offset().top; //각 콘텐츠아티클의 top위치값변수에 저장
+            $("html,body").animate({scrollTop: con - 58}, 500);
+            //각콘텐츠 스크롤높이 58px만큼까지 상단으로 스크롤되어서 올라가게한다.
+            return false;
+          },
+        });
+        $(window).scroll(function () {
+          var sPos = $(window).scrollTop();
+          $(".status").text(sPos); //세로스크롤값 표시하기
+          if (sPos >= 700) {
+            $("footer a").fadeIn();
+          } else {
+            $("footer a").fadeOut();
+          }
+          // 스크롤시 nav상단고정
+          if (sPos >= 58) {
+            $("nav").addClass("act");
+          } else {
+            $("nav").removeClass("act");
+          }
+          // 각 해당컨텐츠가 상단으로올라오면 해당하는 메뉴에 서식을 적용한다.
+          // if (sPos > 776 && sPos < 1546) {
+          //   $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+          //   $(".gnb li:first-child a").addClass("on");
+          // } else if (sPos >= 1546 && sPos < 2316) {
+          //   $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+          //   $(".gnb li:nth-child(2) a").addClass("on");
+          // } else if (sPos >= 2316 && sPos < 3086) {
+          //   $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+          //   $(".gnb li:nth-child(3) a").addClass("on");
+          // } else if (sPos >= 3086 && sPos < 3856) {
+          //   $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+          //   $(".gnb li:nth-child(4) a").addClass("on");
+          // } else if (sPos >= 3856 && sPos < 4626) {
+          //   $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+          //   $(".gnb li:nth-child(5) a").addClass("on");
+          // } else if (sPos >= 4626 && sPos < 5335) {
+          //   $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+          //   $(".gnb li:nth-child(6) a").addClass("on");
+          // } else if (sPos >= 5335) {
+          //   $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+          //   $(".gnb li:last-child a").addClass("on");
+          // } else {
+          //   $(".gnb a").removeClass("on");
+          // }
+          var h = $("section article").height(); //각 콘텐츠별 높이값을 구하여 변수에 저장
+          // 각 컨텐츠의 높이가 모두 같다
+          // 비주얼영역이 포함되어있어서 높이값 h*1이상부터 적용되도록한다.
+          // console.log(h * 4);
+          // console.log($(".gnb li").eq(4));
+          if (sPos > h * 1 && sPos < h * 2) {
+            $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+            $(".gnb li").eq(0).find("a").addClass("on"); //0번째는 비주얼영역
+          } else if (sPos >= h * 2 && sPos < h * 3) {
+            $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+            $(".gnb li").eq(1).find("a").addClass("on");
+          } else if (sPos >= h * 3 && sPos < h * 4) {
+            $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+            $(".gnb li").eq(2).find("a").addClass("on");
+          } else if (sPos >= h * 4 && sPos < h * 5) {
+            $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+            $(".gnb li").eq(3).find("a").addClass("on");
+          } else if (sPos >= h * 5 && sPos < h * 6) {
+            $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+            $(".gnb li").eq(4).find("a").addClass("on");
+          } else if (sPos >= h * 6 && sPos < h * 7) {
+            $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+            $(".gnb li").eq(5).find("a").addClass("on");
+          } else if (sPos >= h * 7) {
+            $(".gnb a").removeClass("on"); //기존서식제거 선택한곳에만 적용되게
+            $(".gnb li").eq(6).find("a").addClass("on");
+          } else {
+            $(".gnb a").removeClass("on");
+          }
+        });
+        // 탑버튼 클릭시 위로올라가는거.
+        // 제일꼭대기인 body,html태그 찾아서 꼭대기까지 scrollTop이 0될때까지 올린다.
+        $("footer a").click(function () {
+          $("body,html").animate({scrollTop: "0px"}, 300);
+          return false;
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <span class="status">좌표값</span>
+    <!-- 상단 헤더영역 시작 -->
+    <header>
+      <div id="header_top">
+        <h1>
+          <a href="index.html" title="">상단로고<img src="./img/header_logo.png" alt="" /></a>
+        </h1>
+      </div>
+      <nav>
+        <!-- ul.gnb>li*7>a[href=# title=] -->
+        <ul class="gnb">
+          <li><a href="#" title="런칭cf">launching cf</a></li>
+          <li><a href="#" title="하이브리드">hybrid</a></li>
+          <li><a href="#" title="design">design</a></li>
+          <li><a href="#" title="convenience">convenience</a></li>
+          <li><a href="#" title="technology">technology</a></li>
+          <li><a href="#" title="safety">safety</a></li>
+          <li><a href="#" title="contact Us">Contact Us</a></li>
+        </ul>
+      </nav>
+    </header>
+    <!-- 컨텐츠영역 시작 -->
+    <section id="cont">
+      <article id="visual">
+        <img src="./img/txt_visual1.png" alt="타이틀이미지" />
+        <img src="./img/visual.png" alt="자동차사진" />
+      </article>
+      <!-- 비주얼제외 영역에 같은서식적용 width,height -->
+      <article class="sub_con" id="cf"><img src="./img/content01.png" alt="" /></article>
+      <article class="sub_con" id="hybrid"><img src="./img/content02.png" alt="" /></article>
+      <article class="sub_con" id="design"><img src="./img/content03.png" alt="" /></article>
+      <article class="sub_con" id="con"><img src="./img/content04.png" alt="" /></article>
+      <article class="sub_con" id="tech"><img src="./img/content05.png" alt="" /></article>
+      <article class="sub_con" id="safe"><img src="./img/content06.png" alt="" /></article>
+      <article class="sub_con" id="contact">문의하기</article>
+    </section>
+    <!-- 푸터영역 시작 -->
+    <footer>
+      <a href="#" title="페이지 상단으로바로가기">TOP</a>
+      <address>Copyright &copy; 2020 Hyundai Motors allrights reserved</address>
+    </footer>
+  </body>
+</html>
