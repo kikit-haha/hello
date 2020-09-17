@@ -155,21 +155,28 @@ article img {
 
 .sub_txt {
   position: absolute;
-  bottom: 115px;
-  right: -88px;
+  bottom: -116px;
+  right: 53px;
   font-size: 16px;
   line-height: 2em;
   margin: 0 auto;
-  width: 800px;
+  width: 600px;
+  height: 166px;
   text-align: justify;
   color: rgba(15, 15, 15, 0.95);
+  opacity: 0;
 }
 .sub_txt h2 {
   margin-bottom: 40px;
   font-size: 50px;
   color: rgba(15, 15, 15, 0.85);
 }
-
+.tasting__sub {
+  position: absolute;
+  bottom: 100px;
+  left: 0px;
+  opacity: 0;
+}
 /* 슬라이드02 #collection 서식 */
 #collection {
   background: url(../img/item_bgi.jpg) no-repeat center center fixed;
@@ -205,19 +212,29 @@ article img {
   text-align: center;
   padding-top: 41px;
 }
-.slide02 li img {
+.img_wrap {
   width: 50%;
+  height: 200;
   margin: 0 auto;
   margin-bottom: 10px;
+  overflow: hidden;
 }
-
+.slide02 li img {
+  width: 100%;
+  transition: 0.5s;
+}
+.img_wrap:hover img {
+  transform: scale(1.1);
+}
 .slide_button li {
   position: absolute;
   font-size: 80px;
   color: rgba(0, 0, 0, 0.897);
   z-index: 50;
   top: 45%;
+  cursor: pointer;
 }
+
 .slide_button li:first-child {
   left: 15px;
 }
@@ -245,10 +262,12 @@ article img {
 
 .tasting__text {
   width: 24%;
+  height: 262px;
   position: absolute;
   right: 10%;
-  top: 100px;
+  bottom: 500px;
   text-align: center;
+  opacity: 0;
 }
 .tasting__cont div h3 {
   font-size: 18px;
@@ -292,7 +311,6 @@ article img {
 }
 .pairing_txt {
   width: 70%;
-
   position: absolute;
   bottom: 100px;
   left: 16%;
@@ -303,6 +321,10 @@ article img {
 .pairing_txt > p {
   margin-bottom: 50px;
   line-height: 2em;
+  position: absolute;
+  bottom: 0px;
+  left: 28%;
+  opacity: 0;
 }
 .pairing_txt > a {
   font-size: 16px;
@@ -322,16 +344,17 @@ article img {
   margin-bottom: 100px;
   position: relative;
 }
-#jomalone p {
+.jomalone_txt {
   width: 35em;
   line-height: 1.5em;
   position: absolute;
-  bottom: 230px;
+  bottom: 0px;
   right: 50px;
   text-align: center;
   background-color: #eae1c4bd;
   padding: 20px;
   color: rgba(0, 0, 0, 0.719);
+  opacity: 0;
 }
 
 .jomalone_gif {

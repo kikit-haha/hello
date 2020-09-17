@@ -114,10 +114,30 @@ $(document).ready(function () {
     } else {
       $(".gnb a").removeClass("on");
     }
-    if (sPos >= 1034 && sPos < 2234) {
-      $(".sub_txt").fadeIn(500);
-    } else {
-      $(".sub_txt").fadeOut(500);
+    // 스크롤시 컨텐츠 나타나게하기
+    // 컬렉션
+    if (sPos >= 1000) {
+      $(".sub_txt").animate({bottom: "115px", opacity: "1"}, 1000, "swing");
+    }
+    // 테이스팅
+    if (sPos >= 2404) {
+      $(".tasting__text.tasting_fig").animate({bottom: "750px", opacity: "1"}, 1000, "swing");
+      $(".tasting__sub.tasting_fig")
+        .delay(800)
+        .animate({bottom: "213px", opacity: "1"}, 1000, "swing");
+    }
+
+    if (sPos >= 3452) {
+      $(".tasting__text.tasting_grape").animate({bottom: "700px", opacity: "1"}, 1000, "swing");
+      $(".tasting__sub.tasting_grape")
+        .delay(800)
+        .animate({bottom: "213px", opacity: "1"}, 1000, "swing");
+    }
+    if (sPos >= 5330) {
+      $(".pairing_txt p").animate({bottom: "100px", opacity: "1"}, 1000, "swing");
+    }
+    if (sPos >= 6240) {
+      $(".jomalone_txt").animate({bottom: "230px", opacity: "1"}, 1200, "swing");
     }
   });
   // 탑버튼 클릭시 위로올라가는거.
